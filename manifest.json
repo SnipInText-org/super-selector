@@ -1,0 +1,24 @@
+{
+  "name": "super-selector",
+  "version": "1.0",
+  "description": "google-chrome extension for getting elements path on click, with cross-extension API",
+  "manifest_version": 2,
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "options_page": "/options/options.html",
+  "browser_action": {
+    "default_popup": "/popup/popup.html"
+  },
+  "icons": {
+      "16": "./images/icon.png",
+      "32": "./images/icon.png",
+      "48": "./images/icon.png",
+      "128": "./images/icon.png"
+    }
+}
