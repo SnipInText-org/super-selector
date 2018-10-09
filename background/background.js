@@ -8,18 +8,24 @@ const inject = function(path, tab){
 chrome.browserAction.onClicked.addListener(function(tab){
   console.log("INJECTED\n" + JSON.stringify(tab).replace(/,/gm,",\n"));
   inject("./rxjs.js", tab);
+  inject("./api/messagesrx.js", tab);
   inject("./testcontent.js", tab);
 });
 
-MessagesRX
-  .injectRequest()
+const subs = MessagesRX
+  .inject()
   .subscribe({
       next: options=>{
         console.log(JSON.stringify(options).replace(/,/gm, ",\n"));
         options.async = true;
         setTimeout(() => options.sendResponse({res: "Rx RESPONSE !"}), 2000);
       },
-      error: (e)=>console.log("ERROR in MessagesRX:\n",e)
+      error: (e)=>console.log("ERROR in MessagesRX:\n",e),
+      complete: (v)=>{
+        console.log("Background receive COMPLETE with: ", v);
+        
+      }
     }
   );
 
+setTimeout(()=>MessagesRX.inject.send((res)=>console.log("res to BACKGROUND : ", res)), 4000);

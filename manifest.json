@@ -11,7 +11,7 @@
     "activeTab"
   ],
   "background": {
-    "scripts": ["rxjs.js","./api/messagesrx.js","./api/messages.js","background.js"],
+    "scripts": ["rxjs.js","./api/messagesrx.js","./api/messages.js","/background/controller.js","/background/background.js"],
     "persistent": false
   },
   "options_page": "/options/options.html",
