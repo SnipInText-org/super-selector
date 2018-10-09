@@ -9,9 +9,10 @@ document.getElementById("clearList").onclick = ()=>{
   Ig.devastate();
 }
 
-Rx.Observable.fromEvent( document.getElementsByTagName("body")[0] , "mouseover")
+Rx.Observable.fromEvent( document.getElementsByTagName("body")[0] , "load")
   .throttleTime(2000)
-  .subscribe(()=>console.log("hovering on the POPUP"))
+  .subscribe(()=>alert("event: Load -> check to inject"))
+  .subscribe(()=>Message.select.out());
 
 
   // document.getElementsByTagName("body")[0].onmouseover = ()=>{

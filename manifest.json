@@ -11,13 +11,13 @@
     "activeTab"
   ],
   "background": {
-    "scripts": ["rxjs.js","./api/messagesrx.js","background.js"],
+    "scripts": ["rxjs.js","./api/messagesrx.js","./api/messages.js","background.js"],
     "persistent": false
   },
   "options_page": "/options/options.html",
   "browser_action": {
-    "default_title": "super-selector",
-    "default_popup": "popup/popup.html"
+    "default_title": "super-selector"
+    
   },
   "icons": {
       "16": "./images/icon.png",

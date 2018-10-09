@@ -1,28 +1,30 @@
-// const Messagerx = new Rx.Subject();
+const MessagesRX = Rx.Observable.fromEventPattern(
+    handler => {
+      const wrapper = (request, sender, sendResponse) => {
+        const options = { async: false, request, sender, sendResponse };
+        handler(options);
+        return options.async;
+      };
+      chrome.runtime.onMessage.addListener(wrapper);
+      return wrapper;
+    },
+    (handler, wrapper) => chrome.runtime.onMessage.removeListener(wrapper)
+  );
 
-// const MessageRX = {
+  const Operator = function(innext){
+      
+  }
 
-//     select : {
-//       in : function(cb){
-//         return new Promise ((ok,notok)=>{
-//           chrome.runtime.onMessage.addListener(
-//             function(request, sender, sendResponse) {
-//               if (request.action === "select"){
-//                 ok(request.value);
-//               }
-//             });
-//         })
-//       },
-//       out : function(val){
-//         if(val && typeof(val) != "string"){
-//           throw new Error("bad parameter it has to be a string");
-//         }
-//         if(chrome.tabs){//runs only outside of content script
-//           chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-//             chrome.tabs.sendMessage(tabs[0].id, {action: "select", value: val});
-//           });
-//         }else{
-//           chrome.runtime.sendMessage({action: "select", value: val});
-//         }
-//       }
-//     },
+  Rx.Observable.prototype.injectRequest = function injectRequest() {
+    var input = this;
+    return Rx.Observable.create(function subscribe(observer) {
+      input.subscribe({
+        next: (v) =>{ 
+            console.log("RX operator's input:\n",JSON.stringify(v).replace(/,/gm,",\n"));
+            observer.next(v);
+        },
+        error: (err) => observer.error(err),
+        complete: () => observer.complete()
+      });
+    });
+  }

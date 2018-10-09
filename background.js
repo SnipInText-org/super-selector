@@ -8,13 +8,18 @@ const inject = function(path, tab){
 chrome.browserAction.onClicked.addListener(function(tab){
   console.log("INJECTED\n" + JSON.stringify(tab).replace(/,/gm,",\n"));
   inject("./rxjs.js", tab);
-  inject("./content.js", tab);
+  inject("./testcontent.js", tab);
 });
 
-chrome.runtime.onMessage.addListener(
-  function(message, callback) {
-    if (message.action === "select"){
-      inject('./content.js');
+MessagesRX
+  .injectRequest()
+  .subscribe({
+      next: options=>{
+        console.log(JSON.stringify(options).replace(/,/gm, ",\n"));
+        options.async = true;
+        setTimeout(() => options.sendResponse({res: "Rx RESPONSE !"}), 2000);
+      },
+      error: (e)=>console.log("ERROR in MessagesRX:\n",e)
     }
-  }
-);
+  );
+
