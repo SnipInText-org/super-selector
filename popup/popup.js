@@ -8,3 +8,12 @@ document.getElementById("clearList").onclick = ()=>{
   console.log("clear");
   Ig.devastate();
 }
+
+Rx.Observable.fromEvent( document.getElementsByTagName("body")[0] , "mouseover")
+  .throttleTime(2000)
+  .subscribe(()=>console.log("hovering on the POPUP"))
+
+
+  // document.getElementsByTagName("body")[0].onmouseover = ()=>{
+//   ;
+// }
