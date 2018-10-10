@@ -35,13 +35,13 @@ Rx.Observable.prototype.inject.send = function (cb){
     console.log("MAGIC");
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {action: "inject"},(res)=>{
-            console.log("Response to background script: \n[");
             if(res){
                 console.log(JSON.stringify(res).replace(/,/gm,",\n"));
-                if(cb)
+                if(typeof(cb) === "function")
                     cb(res);
+            }else{
+                cb("No response, but the message sent");
             }
-            console.log("](the end)")
         });
     });
 };

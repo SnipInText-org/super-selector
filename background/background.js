@@ -16,9 +16,10 @@ const subs = MessagesRX
   .inject()
   .subscribe({
       next: options=>{
+        console.log("incoming message:");
         console.log(JSON.stringify(options).replace(/,/gm, ",\n"));
         options.async = true;
-        setTimeout(() => options.sendResponse({res: "Rx RESPONSE !"}), 2000);
+        options.sendResponse({res: "Rx RESPONSE !"});
       },
       error: (e)=>console.log("ERROR in MessagesRX:\n",e),
       complete: (v)=>{
@@ -28,4 +29,4 @@ const subs = MessagesRX
     }
   );
 
-setTimeout(()=>MessagesRX.inject.send((res)=>console.log("res to BACKGROUND : ", res)), 4000);
+// setTimeout(()=>MessagesRX.inject.send((res)=>console.log("res to BACKGROUND : ", res)), 4000);

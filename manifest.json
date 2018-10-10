@@ -16,8 +16,8 @@
   },
   "options_page": "/options/options.html",
   "browser_action": {
-    "default_title": "super-selector"
-    
+    "default_title": "super-selector",
+    "default_popup": "./popup/popup.html"
   },
   "icons": {
       "16": "./images/icon.png",

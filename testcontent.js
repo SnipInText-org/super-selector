@@ -17,9 +17,10 @@ MessagesRX
     .inject()
     .subscribe(
         {
-            next: (v)=>{
-                console.log("Message from Background: ", v);
+            next: (options)=>{
+                console.log("Message from Background: ", options);
                 options.async = true;
+                options.sendResponse({message: "No Fuck YOU! (your content script)"});
             }
         }
     );
