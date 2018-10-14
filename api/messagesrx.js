@@ -10,38 +10,39 @@ const MessagesRX = Rx.Observable.fromEventPattern(
     },
     (handler, wrapper) => chrome.runtime.onMessage.removeListener(wrapper)
   );
-
-  Rx.Observable.prototype.inject = function () {
-    let input = this;
-    console.log("WHAT THE FUCK iS")
-    return Rx.Observable.create(function (observer) {
-        input.subscribe({
-            next: (v) =>{
-                console.log("RX operator's input:\n", v/*JSON.stringify(v).replace(/,/gm,",\n")*/);
-                if(v.request.action === "inject"){
-                    console.log("injector Operator says: NEXT");
-                    observer.next(v);
+//TODO: VALIDATIONS
+MessagesRX.add = function(name, pass){
+    MessagesRX[name] = function () {
+        let input = this;
+        return Rx.Observable.create(function (observer) {
+            input.subscribe({
+                next: (v) =>{
+                    console.log("RX operator's input:\n", v/*JSON.stringify(v).replace(/,/gm,",\n")*/);
+                    if(v.request.action === pass){
+                        console.log("injector Operator says: NEXT");
+                        observer.next(v);
+                    }else{console.log("injector Operator says: NOTHING");}
+                },
+                error: (err) => observer.error(err("Error in operator injectorRequest!!!")),
+                complete: () => observer.complete()
+            });
+    
+        });
+    };
+    MessagesRX[name].send = function (val,cb){
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+            chrome.runtime.sendMessage({action: pass, value: val}, function(res){
+                if(res){
+                    if(typeof(cb) === "function")
+                        cb(res);
                 }else{
-                    console.log("injector Operator says: NOTHING");
+                    cb("No response, but the message sent");
                 }
-            },
-            error: (err) => observer.error(err("Error in operator injectorRequest!!!")),
-            complete: () => observer.complete()
+            });
         });
+    };
+}
+MessagesRX.add("performInjection", "background, do your thing");
+MessagesRX.add("isInjected", "isInjected");
 
-    });
-};
-Rx.Observable.prototype.inject.send = function (cb){
-    console.log("MAGIC");
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {action: "inject"},(res)=>{
-            if(res){
-                console.log(JSON.stringify(res).replace(/,/gm,",\n"));
-                if(typeof(cb) === "function")
-                    cb(res);
-            }else{
-                cb("No response, but the message sent");
-            }
-        });
-    });
-};
+

@@ -7,6 +7,9 @@
     "storage",
     "https://*/*",
     "http://*/*",
+    "chrome-devtools://*",
+    "chrome-devtools://*/*",
+    "chrome-devtools://*/*/",
     "tabs",
     "activeTab"
   ],

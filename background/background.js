@@ -12,21 +12,19 @@ chrome.browserAction.onClicked.addListener(function(tab){
   inject("./testcontent.js", tab);
 });
 
-const subs = MessagesRX
-  .inject()
-  .subscribe({
-      next: options=>{
+const subInject = MessagesRX
+  .performInjection()
+  .subscribe(
+    options => {
         console.log("incoming message:");
         console.log(JSON.stringify(options).replace(/,/gm, ",\n"));
         options.async = true;
-        options.sendResponse({res: "Rx RESPONSE !"});
-      },
-      error: (e)=>console.log("ERROR in MessagesRX:\n",e),
-      complete: (v)=>{
-        console.log("Background receive COMPLETE with: ", v);
-        
+        setTimeout(()=>options.sendResponse({res: "Rx RESPONSE !"}), 5000);
+        chrome.tabs.query({active: true, currentWindow: true}, function(tab) {
+          inject("./rxjs.js", tab);
+          inject("./api/messagesrx.js", tab);
+          inject("./testcontent.js", tab);
+        });
       }
-    }
   );
 
-// setTimeout(()=>MessagesRX.inject.send((res)=>console.log("res to BACKGROUND : ", res)), 4000);
