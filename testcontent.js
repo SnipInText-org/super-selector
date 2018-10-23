@@ -14,3 +14,14 @@ MessagesRX
             }
         }
     );
+
+MessagesRX
+    .wannaScript()
+    .subscribe(
+        {
+            next: (options)=>{
+                options.async = true;
+                options.sendResponse({time: Date.now()});
+            }
+        }
+    );

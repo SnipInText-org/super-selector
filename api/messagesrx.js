@@ -29,18 +29,22 @@ MessagesRX.add = function(name, pass){
     
         });
     };
-    MessagesRX[name].send = function (val,cb){
+    MessagesRX[name].send = function (val,cb,log){
+        if(typeof(log) === "string"){
+            console.log(log);
+        }
         chrome.runtime.sendMessage({action: pass, value: val}, function(res){
             if(res){
                 if(typeof(cb) === "function")
                     cb(res);
             }else{
-                cb("No response, but the message sent");
+                cb("[No response, but the message sent]");
             }
         });
     };
 }
 MessagesRX.add("performInjection", "background, do your thing");
 MessagesRX.add("isInjected", "isInjected");
+MessagesRX.add("wannaScript", "wannaScript");
 
 
