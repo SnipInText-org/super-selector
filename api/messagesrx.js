@@ -30,15 +30,13 @@ MessagesRX.add = function(name, pass){
         });
     };
     MessagesRX[name].send = function (val,cb){
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-            chrome.runtime.sendMessage({action: pass, value: val}, function(res){
-                if(res){
-                    if(typeof(cb) === "function")
-                        cb(res);
-                }else{
-                    cb("No response, but the message sent");
-                }
-            });
+        chrome.runtime.sendMessage({action: pass, value: val}, function(res){
+            if(res){
+                if(typeof(cb) === "function")
+                    cb(res);
+            }else{
+                cb("No response, but the message sent");
+            }
         });
     };
 }

@@ -5,18 +5,19 @@ const inject = function(path, tab){
   });
 };
 
-chrome.browserAction.onClicked.addListener(function(tab){
-  console.log("INJECTED\n" + JSON.stringify(tab).replace(/,/gm,",\n"));
-  inject("./rxjs.js", tab);
-  inject("./api/messagesrx.js", tab);
-  inject("./testcontent.js", tab);
-});
+// chrome.browserAction.onClicked.addListener(function(tab){
+//   console.log("INJECTED\n" + JSON.stringify(tab).replace(/,/gm,",\n"));
+//   inject("./rxjs.js", tab);
+//   inject("./api/messagesrx.js", tab);
+//   inject("./testcontent.js", tab);
+// });
 
 const subInject = MessagesRX
   .performInjection()
   .subscribe(
     options => {
-        console.log("incoming message:");
+        console.log("COLLECT:");
+        Collect.log("incoming message:");
         console.log(JSON.stringify(options).replace(/,/gm, ",\n"));
         options.async = true;
         setTimeout(()=>options.sendResponse({res: "Rx RESPONSE !"}), 5000);
