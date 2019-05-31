@@ -1,5 +1,0 @@
-const Perform = {
-    handshake : function(){
-        
-    }
-}
